@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chary | Bocaditos dulces &amp; salados</title>
+<meta name="description" content="Carta de bocaditos dulces y salados para tus eventos en La Libertad y Santa Elena.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chary | Bocaditos dulces &amp; salados">
+<meta property="og:description" content="Mira la carta, elige tus bocaditos y envía tu pedido por WhatsApp.">
+<!-- Al publicar la página, cambia esta ruta por la URL completa, ej. https://tusitio.netlify.app/imagenes/banner.png -->
+<meta property="og:image" content="imagenes/banner.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-md-none" href="index.html"><img src="imagenes/logo.webp" alt="Chary, bocaditos dulces y salados" class="logo-nav"></a>
+    <button class="btn btn-pedir ms-auto me-2 order-md-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelPedido">Pedir online <span class="badge d-none" id="navCount">0</span></button>
+    <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav mx-auto align-items-md-center gap-md-3">
+        <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#carta" data-filtro="dulce">Dulces</a></li>
+        <li class="nav-item"><a class="nav-link" href="#carta" data-filtro="salado">Salados</a></li>
+        <!-- Futuras pestañas: <li class="nav-item"><a class="nav-link" href="combos.html">Catering</a></li> -->
+        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
+  <h1 class="visually-hidden">Chary, bocaditos dulces y salados</h1>
+  <img src="imagenes/banner.webp" alt="Chary, bocaditos dulces y salados: alfajores, tartaletas de fruta, brownies, canapés, empanaditas y vasitos de fresa" class="hero-banner">
+</header>
+
+<main class="container py-5" id="carta">
+  <h2 class="mb-1">Nuestra carta</h2>
+  <p class="text-secondary">Toca una tarjeta para ver los detalles y agregarla a tu pedido.</p>
+  <div class="filtros d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrar por tipo">
+    <button class="btn active" data-f="todos">Todos</button>
+    <button class="btn" data-f="dulce">Dulces</button>
+    <button class="btn" data-f="salado">Salados</button>
+  </div>
+  <div class="row g-3 g-md-4" id="lista"></div>
+</main>
+
+<footer class="py-5" id="contacto">
+  <div class="container text-center">
+    <h3>¿Te gustó algo?</h3>
+    <p class="mb-3">Escríbenos con la fecha, el lugar y el número de invitados.</p>
+    <a data-wa class="btn btn-wa btn-lg" target="_blank" rel="noopener">Abrir WhatsApp</a>
+    <p class="mt-4 mb-0 small"><span data-ciudad></span> · Instagram: <span data-instagram></span></p>
+  </div>
+</footer>
+
+<a data-wa class="wa-flotante" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">💬</a>
+
+<!-- Botón flotante del pedido -->
+<button type="button" id="pillPedido" class="pill-pedido d-none" data-bs-toggle="offcanvas" data-bs-target="#panelPedido">
+  🛍️ Ver mi pedido <span class="badge bg-light text-dark" id="pillCount">0</span>
+</button>
+
+<!-- Aviso al agregar -->
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index:1090">
+  <div id="toastAgregado" class="toast align-items-center border-0" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="1800">
+    <div class="d-flex"><div class="toast-body" id="toastTexto">Agregado a tu pedido</div></div>
+  </div>
+</div>
+
+<!-- Panel del pedido -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="panelPedido" aria-labelledby="panelTitulo">
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title" id="panelTitulo">Mi pedido</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <div id="listaPedido" class="flex-grow-1"></div>
+    <div id="formPedido" class="mt-3">
+      <div id="totalPedido" class="total-pedido mb-3"></div>
+      <div class="mb-2">
+        <label for="clienteNombre" class="form-label mb-1">Tu nombre</label>
+        <input type="text" class="form-control" id="clienteNombre" autocomplete="name" required>
+        <div class="invalid-feedback">Escribe tu nombre para enviar el pedido.</div>
+      </div>
+      <div class="mb-2">
+        <label for="clienteFecha" class="form-label mb-1">Fecha del evento (opcional)</label>
+        <input type="date" class="form-control" id="clienteFecha">
+      </div>
+      <div class="mb-3">
+        <label for="clienteNotas" class="form-label mb-1">Notas (opcional)</label>
+        <textarea class="form-control" id="clienteNotas" rows="2" placeholder="Ej: lugar de entrega, colores, alergias"></textarea>
+      </div>
+      <button type="button" id="enviarPedido" class="btn btn-wa btn-lg w-100">Enviar pedido por WhatsApp</button>
+      <button type="button" id="vaciarPedido" class="btn btn-link w-100 mt-1">Vaciar pedido</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de detalles (se llena desde js/main.js) -->
+<div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalTitulo"></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="modalCuerpo"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" id="modalAgregar" class="btn btn-rose">Agregar al pedido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+:root{
+  --oro:#B39A4D;          /* líneas y bordes dorados */
+  --oro-texto:#7A6527;    /* texto dorado (buen contraste sobre blanco) */
+  --oro-claro:#E3CE8E;    /* botones rellenos */
+  --crema:#FAF5E6;
+  --rosa:#F8C8DC;         /* pastel: tarjetas de dulces */
+  --menta:#C9EBD8;        /* pastel: tarjetas de salados */
+  --bg:#FFFFFF;
+  --ink:#3B2E1E;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3,h4,.precio,.total-pedido{font-family:'Cormorant Garamond',serif;font-weight:700}
+h2{font-size:2.2rem}
+
+/* ---- Menú ---- */
+.navbar{background:#fff;border-bottom:1px solid #EFE7D0}
+.navbar .nav-link{color:var(--oro-texto);text-transform:uppercase;letter-spacing:.08em;font-size:.95rem;font-weight:500}
+.navbar .nav-link:hover,.navbar .nav-link:focus{color:var(--ink)}
+.navbar-toggler{border-color:var(--oro)}
+.logo-nav{height:36px;width:auto;display:block}
+.btn-pedir{background:transparent;border:1px solid var(--oro);color:var(--oro-texto);text-transform:uppercase;letter-spacing:.08em;font-weight:500;border-radius:.4rem;padding:.5rem 1rem}
+.btn-pedir:hover,.btn-pedir:focus{background:var(--oro-claro);color:var(--ink);border-color:var(--oro)}
+.btn-pedir .badge{background:var(--oro-texto);color:#fff}
+
+/* ---- Portada (banner con logo y bocaditos) ---- */
+.hero{background:#fff;padding:0;overflow:hidden}
+.hero-banner{display:block;width:100%;max-width:1280px;height:auto;margin:0 auto;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent);
+  mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent)}
+
+/* ---- Botones ---- */
+.btn-rose{background:var(--oro-claro);color:var(--ink);border:1px solid var(--oro);font-weight:700}
+.btn-rose:hover,.btn-rose:focus{background:#D6BE76;color:var(--ink);border-color:var(--oro)}
+.btn-wa{background:#A8E6BF;color:#1C4A2E;font-weight:700;border:0}
+.btn-wa:hover{background:#8EDDAA;color:#1C4A2E}
+.btn-link{color:var(--oro-texto)}
+.filtros .btn{border-radius:2rem;border:1px solid var(--oro);color:var(--oro-texto);font-weight:700}
+.filtros .btn.active{background:var(--oro-claro);color:var(--ink)}
+a:focus-visible,.btn:focus-visible,.card-bocadito:focus-visible{outline:3px solid var(--oro-texto);outline-offset:2px}
+
+/* ---- Tarjetas ---- */
+.card-bocadito{position:relative;border:1px solid #EFE7D0;border-radius:1.25rem;overflow:hidden;box-shadow:0 6px 18px rgba(59,46,30,.08);height:100%;cursor:pointer;transition:transform .15s ease}
+.card-bocadito:hover{transform:translateY(-3px)}
+.card-bocadito .card-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.45rem}
+.card-bocadito .foto{height:150px;display:flex;align-items:center;justify-content:center;font-size:4.5rem}
+.card-bocadito .foto.dulce{background:#FFF1F6}
+.card-bocadito .foto.salado{background:#F1FAF5}
+.card-bocadito img.foto{width:100%;height:170px;object-fit:contain;padding:.6rem}
+.lista-precios{list-style:none;padding:0;margin:.3rem 0 .5rem;font-size:.92rem}
+.lista-precios li{display:flex;justify-content:space-between;gap:.5rem;padding:.15rem 0;border-bottom:1px dotted #E3D8B5}
+.lista-precios strong{color:var(--oro-texto)}
+.card-bocadito.en-pedido{outline:3px solid var(--oro);outline-offset:-3px}
+.marca-pedido{position:absolute;top:.5rem;left:.5rem;z-index:2;background:var(--menta);color:#1C4A2E;font-size:.78rem;font-weight:700;padding:.2rem .6rem;border-radius:2rem}
+.precio{color:var(--oro-texto);font-size:1.3rem}
+.ver-mas{font-size:.85rem;font-weight:700;color:var(--oro-texto);text-decoration:underline}
+
+/* ---- Modal de detalles ---- */
+.modal-content{border:0;border-radius:1.25rem;background:#fff;color:var(--ink)}
+.modal-header,.modal-footer{border-color:#EFE7D0}
+.foto-modal{height:220px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:6rem}
+.foto-modal.dulce{background:#FFF1F6}
+.foto-modal.salado{background:#F1FAF5}
+img.foto-modal{width:100%;object-fit:contain;padding:.75rem}
+.contador{display:flex;align-items:center;justify-content:center;gap:1rem;background:var(--crema);border-radius:1rem;padding:.75rem;margin-bottom:.75rem}
+.contador .btn{width:3rem;height:3rem;border-radius:50%;border:1px solid var(--oro);background:#fff;color:var(--ink);font-size:1.5rem;font-weight:700;line-height:1;padding:0}
+.contador .btn:hover:not(:disabled){background:var(--oro-claro)}
+.contador .btn:disabled{opacity:.35}
+.contador-centro{text-align:center;min-width:6rem}
+.contador-num{display:block;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:2.4rem;line-height:1}
+.contador-unidad{font-size:.85rem;color:var(--oro-texto)}
+.contador-precio{text-align:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.5rem;color:var(--oro-texto)}
+
+/* ---- Pedido ---- */
+.pill-pedido{position:fixed;left:1.2rem;bottom:1.2rem;z-index:1030;border:1px solid var(--oro);border-radius:2rem;background:var(--oro-claro);color:var(--ink);font-weight:700;padding:.8rem 1.2rem;box-shadow:0 6px 16px rgba(59,46,30,.25)}
+.offcanvas{background:#fff;color:var(--ink)}
+.linea-pedido{display:flex;gap:.75rem;align-items:center;padding:.75rem 0;border-bottom:1px solid #EFE7D0}
+.stepper{display:flex;align-items:center;gap:.25rem}
+.stepper .btn{background:var(--crema);color:var(--ink);font-weight:700;min-width:2rem}
+.stepper .quitar{background:transparent}
+.stepper span{min-width:1.5rem;text-align:center;font-weight:700}
+.total-pedido{font-size:1.6rem;color:var(--oro-texto)}
+.toast{background:var(--menta);color:#1C4A2E;font-weight:700}
+.wa-flotante{position:fixed;right:1.2rem;bottom:1.2rem;width:3.6rem;height:3.6rem;border-radius:50%;background:#A8E6BF;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(59,46,30,.25);z-index:1030;text-decoration:none;font-size:1.9rem}
+
+/* ---- Pie ---- */
+footer{background:var(--crema);color:var(--ink);border-top:1px solid var(--oro)}
+
+/* Celular: lista de tarjetas anchas (foto a la izquierda, datos a la derecha) */
+@media (max-width:767.98px){
+  .card-bocadito{flex-direction:row;min-height:150px}
+  .card-bocadito .foto,.card-bocadito img.foto{flex:0 0 42%;width:42%;height:auto;min-height:150px;align-self:stretch;font-size:3.5rem}
+  .card-bocadito img.foto{padding:.4rem}
+  .card-bocadito .card-body{padding:.75rem .9rem}
+  .card-bocadito .card-title{font-size:1.35rem;margin-bottom:.15rem}
+  .card-bocadito .card-text{font-size:.9rem;margin-bottom:.2rem}
+  .hero-banner{height:320px;object-fit:cover;object-position:center}
+  .btn-pedir{padding:.4rem .7rem;font-size:.85rem}
+}
+@media (prefers-reduced-motion:reduce){.card-bocadito{transition:none}}
+
+/* ---- Sabores (opciones) en el modal ---- */
+.btn-opcion{border:1px solid var(--oro);color:var(--ink);border-radius:2rem;font-weight:700;padding:.4rem 1.1rem}
+.btn-check:checked + .btn-opcion{background:var(--oro-claro);color:var(--ink);border-color:var(--oro)}
+.btn-check:focus-visible + .btn-opcion{outline:3px solid var(--oro-texto);outline-offset:2px}
+
+/* ---- Etiqueta "GRATIS" (negra con detalle dorado: se distingue de la marca verde del pedido) ---- */
+.etiqueta-gratis{display:inline-flex;align-items:center;gap:.5rem;background:#C2601A;color:#fff;border-radius:2rem;padding:.2rem .75rem .2rem .25rem;font-size:.82rem;font-weight:700;margin-bottom:.5rem;box-shadow:0 2px 6px rgba(194,96,26,.35)}
+.etiqueta-gratis .gratis-tag{background:var(--oro-claro);color:var(--ink);border-radius:2rem;padding:.12rem .6rem;font-size:.72rem;font-weight:700;letter-spacing:.08em}
+
