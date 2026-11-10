@@ -17,16 +17,31 @@ function tramo(b, unidades) {
     .filter(p => p.cantidad <= unidades)
     .sort((x, y) => y.cantidad - x.cantidad)[0] || null;
 }
-/* Precio de N unidades = precio del tramo × (N ÷ cantidad del tramo). null = sin precio */
+/* Tramo más grande (el último escalón de precios) */
+const tramoTop = (b) => [...b.presentaciones].sort((x, y) => y.cantidad - x.cantidad)[0];
+/* ¿Aplica "extra"? Es un precio fijo por cada paso que pase del tramo más grande.
+   Ej. 12 = $15, 24 = $25 y extra: 10 → 36 = $35, 48 = $45, 60 = $55... */
+const usaExtra = (b, unidades) => b.extra != null && unidades > tramoTop(b).cantidad;
+
+/* Precio de N unidades = precio del tramo × (N ÷ cantidad del tramo), o con "extra" si el bocadito lo tiene.
+   null = sin precio */
 function precioDe(b, unidades) {
   const t = tramo(b, unidades);
   if (!t || t.precio == null) return null;
+  if (usaExtra(b, unidades)) {
+    const top = tramoTop(b);
+    return Math.round((top.precio + (unidades - top.cantidad) / paso(b) * b.extra) * 100) / 100;
+  }
   return Math.round(t.precio * (unidades / t.cantidad) * 100) / 100;
 }
 /* Texto del cálculo, ej. "3 × $9.00" (precio de cada paso según el tramo) */
 function detalleCuenta(b, unidades) {
   const t = tramo(b, unidades);
   if (!t || t.precio == null) return "";
+  if (usaExtra(b, unidades)) {
+    const top = tramoTop(b);
+    return `${dinero(top.precio)} + ${(unidades - top.cantidad) / paso(b)} × ${dinero(b.extra)}`;
+  }
   const porPaso = Math.round(t.precio * paso(b) / t.cantidad * 100) / 100;
   return `${unidades / paso(b)} × ${dinero(porPaso)}`;
 }

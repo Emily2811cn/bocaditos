@@ -94,18 +94,21 @@ const BOCADITOS = [
   id: "empanadas de harina", nombre: "Empanadas de harina", tipo: "salado", emoji: "🥟", foto: "imagenes/empanadas_harina.webp",
   desc: "Doradas y crujientes.",
   opciones: ["Queso", "Pollo", "Carne"],
+  gratis: "Aderezo de mayonesa",
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
 {
   id: "empanadas de maiz sabrosa", nombre: "Empanadas de maiz sabrosa", tipo: "salado", emoji: "🥟", foto: "imagenes/empanadas_maiz_sabrosa.webp",
   desc: "Doradas y crujientes.",
   opciones: ["Queso", "Pollo", "Carne"],
+  gratis: "Aderezo de mayonesa",
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
 {
   id: "medallones de chorizo", nombre: "Medallones de chorizo", tipo: "salado", emoji: "🥓", foto: "imagenes/medallones_chorizo.webp",
   desc: "Medallones de chorizo a la parrilla.",
   opciones: ["Pavo", "Pollo", "Carne"],
+  gratis: "Aderezo de mayonesa",
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
   {
@@ -117,14 +120,100 @@ const BOCADITOS = [
   id: "empanaditas de verde", nombre: "Empanaditas de verde", tipo: "salado", emoji: "🥟", foto: "imagenes/empanadas_verde.webp",
   desc: "Empanaditas de verde.",
   opciones: ["Queso", "Pollo", "Carne"],
+  gratis: "Aderezo de mayonesa",
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
   {
   id: "bolitas de carne", nombre: "Bolitas de carne", tipo: "salado", emoji: "🧆", foto: "imagenes/bolitas_carne.webp",
   desc: "Bolitas de carne con queso cheddar.",
+  gratis: "Aderezo de mayonesa",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+  {
+  id: "rollitos de jamon y queso", nombre: "Rollitos de jamón y queso", tipo: "salado", emoji: "🥪", foto: "imagenes/rollitos_jamon.png",
+  desc: "Rollitos de jamón y queso, acompañado de aceitunas.",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+  {
+  id: "rollitos de tocino", nombre: "Rollitos de tocino", tipo: "salado", emoji: "🥪", foto: "imagenes/rollitos_tocino.png",
+  desc: "Rollitos de tocino.",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+  {
+  id: "mini sanduches de jamon y queso", nombre: "Mini Sánduches de jamón y queso", tipo: "salado", emoji: "🥪", foto: "imagenes/sanduches_queso_jamon.png",
+  desc: "Sánduches en capas de jamón y queso, acompañado de aceitunas.",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+{
+  id: "canapes de jamon y aceituna", nombre: "Canapés de jamón y aceitunas", tipo: "salado", emoji: "🥪", foto: "imagenes/canapes_jamon.png",
+  desc: "Canapés de jamón y aceitunas.",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+{
+  id: "mini sanduches de pollo", nombre: "Mini Sánduches de pollo", tipo: "salado", emoji: "🥪", foto: "imagenes/sanduches_pollo.png",
+  desc: "Sánduches con relleno de pollo.",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+{
+  id: "camarones enrollados", nombre: "Camarones enrollados", tipo: "salado", emoji: "🦐", foto: "imagenes/camarones_enrollados.png",
+  desc: "Camarones envueltos en masa crujiente",
+  gratis: "Aderezo de mayonesa",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 20 }]
+},
+{
+  id: "mini corviches", nombre: "Mini Corviches de pescado", tipo: "salado", emoji: "🐠", foto: "imagenes/corviches.png",
+  desc: "Mini corviches de pescado, dorados y crujientes",
+  gratis: "Ají",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 20 }]
+},
+{
+  id: "mini muchines", nombre: "Mini Muchines de queso", tipo: "salado", emoji: "🐠", foto: "imagenes/muchines.png",
+  desc: "Mini muchines de yuca con relleno de queso.",
+  gratis: "Aderezo de mayonesa",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+{
+  id: "bolitas de pollo", nombre: "Mini Bolitas de pollo", tipo: "salado", emoji: "🍗", foto: "imagenes/bolitas_pollo.png",
+  desc: "Mini bolitas de pollo, doradas y crujientes",
+  gratis: "Aderezo de mayonesa",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 20 }]
+},
+{
+  id: "bolitas de queso", nombre: "Mini Bolitas de queso", tipo: "salado", emoji: "🧀", foto: "imagenes/bolitas_queso.png",
+  desc: "Mini bolitas de queso, doradas y crujientes",
+  gratis: "Aderezo de mayonesa",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+{
+  id: "mini brochetas", nombre: "Mini Brochetas de pollo", tipo: "salado", emoji: "🍗", foto: "imagenes/mini_brochetas.png",
+  desc: "Brochetas de queso, jamón, aceituna y pimiento.",
+  gratis: "Aderezo de mayonesa",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
+},
+{
+  id: "canastas de carne con guacamole", nombre: "Canastas de carne con guacamole", tipo: "salado", emoji: "🥑", foto: "imagenes/canastas_carne.png",
+  desc: "Canastitas crujientes rellenas de carne y cubiertas con guacamole.",
+  presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 20 }]
+},
+{
+  id: "mini copa mexicana", nombre: "Mini Copa Mexicana", tipo: "salado", emoji: "🥑", foto: "imagenes/copa_mexicana.png",
+  desc: "Capas de salsas, carne y guacamole en un vasito",
+  paso: 12, minimo: 12,
+   extra: 10,
+  presentaciones: [{ cantidad: 12, precio: 15 }, { cantidad: 24, precio: 25 }]
+},
+{
+  id: "shots de ceviche", nombre: "Shots de Ceviche", tipo: "salado", emoji: "🐟", foto: "imagenes/ceviche.png",
+  desc: "Ceviche fresco envasado en pequeños shots",
+  paso: 12, minimo: 12,
+   extra: 10,
+  presentaciones: [{ cantidad: 12, precio: 15 }, { cantidad: 24, precio: 25 }]
+},
+  {
+  id: "empanaditas de ojaldre", nombre: "Empanaditas de ojaldre", tipo: "salado", emoji: "🥟", foto: "imagenes/empanadas_ojaldre.png",
+  desc: "Empanaditas de hojaldre dorado y crujiente..",
   opciones: ["Queso", "Pollo", "Carne"],
   gratis: "Aderezo de mayonesa",
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
-
 ];
