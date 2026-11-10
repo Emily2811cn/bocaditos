@@ -92,7 +92,7 @@ function pintarCarta() {
         <div class="card card-bocadito${u ? " en-pedido" : ""}" role="button" tabindex="0" data-id="${b.id}" aria-label="Ver detalles de ${b.nombre}">
           ${u ? `<span class="marca-pedido">✓ ${u} en tu pedido</span>` : ""}
           ${b.foto
-            ? `<img class="foto ${b.tipo}" src="${b.foto}" alt="${b.nombre}" loading="lazy">`
+            ? `<img class="foto ${b.tipo}" src="${b.foto}" alt="${b.nombre}" loading="lazy" decoding="async">`
             : `<div class="foto ${b.tipo}" aria-hidden="true">${b.emoji}</div>`}
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">${b.nombre}</h5>
