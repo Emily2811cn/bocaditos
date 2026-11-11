@@ -222,3 +222,34 @@ const BOCADITOS = [
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
 ];
+
+/* ================= LOS MÁS PEDIDOS Y GALERÍA ================= */
+
+/* Los más pedidos (se muestran solo con el nombre): escribe los "id" de los bocaditos (los mismos de la lista de arriba).
+   *** EJEMPLO: pon aquí los que más te piden *** */
+const MAS_PEDIDOS = [
+  "alfajores",
+  "empanadas de harina",
+  "tartaletas de atun",
+  "bolitas de carne",
+  "frutitas de mazapan",
+  "tartaletas con crema pastelera",
+  "mini tortas de chocolate",
+  "vasitos-fresa",
+  "tartaletas de atun",
+  "Conitos rellenos de manjar",
+
+
+];
+
+/* Pedidos que hemos realizado (galería): una foto por bloque. La sección se oculta sola mientras esté vacía.
+   Guarda las fotos en la carpeta imagenes/galeria/ (conviértelas a .webp con optimizar_imagenes.py).
+   texto: opcional, se ve al abrir la foto. Ejemplo:
+     { foto: "imagenes/galeria/pedido1.webp", texto: "Cumpleaños de Ana" },  */
+/* Cuántas fotos se ven al inicio; el resto aparece con el botón "Ver más fotos". */
+const GALERIA_INICIAL = 12;
+
+const GALERIA = [
+  { foto: "imagenes/galeria/bolitas_queso.webp", texto: "Cumpleaños de Ana" }
+];
+

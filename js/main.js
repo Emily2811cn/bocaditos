@@ -328,3 +328,60 @@ function refrescar() {
   pill.classList.toggle("d-none", n === 0);
 }
 refrescar();
+
+
+/* ---- Los más pedidos y galería (datos en data.js) ---- */
+(function favoritos() {
+  // Más pedidos: solo el nombre (al tocarlo se abre el detalle de la carta)
+  const favoritos = MAS_PEDIDOS.map(buscar).filter(Boolean);
+  if (favoritos.length) {
+    document.getElementById("masPedidos").innerHTML = favoritos.map(b =>
+      `<button type="button" class="chip-favorito" data-id="${b.id}" aria-label="Ver detalles de ${b.nombre}">${b.nombre}</button>`).join("");
+    document.getElementById("masPedidosBox").classList.remove("d-none");
+  }
+  document.getElementById("masPedidos").addEventListener("click", e => {
+    const c = e.target.closest(".chip-favorito");
+    if (c) abrirDetalle(c.dataset.id);
+  });
+
+  // Galería con visor (flechas o teclado para pasar de foto)
+  if (!GALERIA.length) return;
+  const cajaGal = document.getElementById("galeria");
+  const btnMas = document.getElementById("galeriaMas");
+  cajaGal.innerHTML = GALERIA.map((g, i) => `
+    <button type="button" class="galeria-item"${i >= GALERIA_INICIAL ? " hidden" : ""} data-i="${i}" aria-label="Ver foto ${i + 1}">
+      <img src="${g.foto}" alt="${g.texto || "Pedido " + (i + 1)}" loading="lazy" decoding="async">
+    </button>`).join("");
+  document.getElementById("galeriaBox").classList.remove("d-none");
+  if (GALERIA.length > GALERIA_INICIAL) {
+    btnMas.classList.remove("d-none");
+    btnMas.addEventListener("click", () => {
+      cajaGal.querySelectorAll("[hidden]").forEach(x => x.hidden = false);
+      btnMas.classList.add("d-none");
+    });
+  }
+
+  const visor = bootstrap.Modal.getOrCreateInstance(document.getElementById("modalFoto"));
+  const img = document.getElementById("visorImg");
+  const pie = document.getElementById("visorTexto");
+  let actual = 0;
+  function mostrar(i) {
+    actual = (i + GALERIA.length) % GALERIA.length;
+    img.src = GALERIA[actual].foto;
+    img.alt = GALERIA[actual].texto || "Pedido " + (actual + 1);
+    pie.textContent = GALERIA[actual].texto || `${actual + 1} / ${GALERIA.length}`;
+  }
+  cajaGal.addEventListener("click", e => {
+    const b = e.target.closest(".galeria-item");
+    if (!b) return;
+    mostrar(Number(b.dataset.i));
+    visor.show();
+  });
+  document.getElementById("visorAnt").addEventListener("click", () => mostrar(actual - 1));
+  document.getElementById("visorSig").addEventListener("click", () => mostrar(actual + 1));
+  document.getElementById("modalFoto").addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft") mostrar(actual - 1);
+    if (e.key === "ArrowRight") mostrar(actual + 1);
+  });
+})();
+
