@@ -1,11 +1,16 @@
 /* Catálogo: para agregar un bocadito, copia un bloque { ... }, pégalo y cámbialo.
-   tipo: "dulce" o "salado".
+   tipo: "dulce", "salado" o "postre" (cada tipo tiene su botón en la carta y en el menú).
    foto: ruta de la imagen dentro de /imagenes (si la dejas vacía "", se muestra el emoji).
 
    presentaciones: precios por tramo, ej. { cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }.
      - Se ven en la tarjeta. Si dejas precio: null se muestra "—".
      - El contador usa el tramo más grande que alcance la cantidad y lo escala:
        50 = $10 (precio propio), 100 = $18, 150 = $27, 200 = $36... (con 100 = $18, cada 50 sale a $9).
+
+   Postres que se venden por porción o por unidad (no de 50 en 50): agrega en su bloque
+         tipo: "postre", unidad: ["porción", "porciones"], paso: 1, minimo: 1,
+     y pon el precio de UNA porción: presentaciones: [{ cantidad: 1, precio: 3.5 }].
+     Mientras el precio sea null, la página muestra "—" y "Precio por confirmar".
 
    Pedido mínimo y salto del contador (por defecto 50 y de 50 en 50):
      - Para los bocaditos que se venden de 12 en 12, agrega en su bloque:
@@ -221,6 +226,25 @@ const BOCADITOS = [
   gratis: "Aderezo de mayonesa",
   presentaciones: [{ cantidad: 50, precio: 10 }, { cantidad: 100, precio: 18 }]
 },
+  {
+    id: "rolls de canela", nombre: "Rolls de canela", tipo: "postre", emoji: "🌀", foto: "",
+    desc: "Rolls de canela suaves y esponjosos.",
+    unidad: ["roll", "rolls"], paso: 1, minimo: 1,
+    presentaciones: [{ cantidad: 1, precio: null }]
+  },
+  {
+    id: "porcion torta chocolate mojada", nombre: "Torta de chocolate mojada (porción)", tipo: "postre", emoji: "🍰", foto: "",
+    desc: "Porción de torta de chocolate húmeda y esponjosa.",
+    unidad: ["porción", "porciones"], paso: 1, minimo: 1,
+    presentaciones: [{ cantidad: 1, precio: null }]
+  },
+  {
+    id: "porcion tres leches", nombre: "Tres leches (porción)", tipo: "postre", emoji: "🍰", foto: "",
+    desc: "Porción de torta tres leches.",
+    unidad: ["porción", "porciones"], paso: 1, minimo: 1,
+    presentaciones: [{ cantidad: 1, precio: null }]
+  },
+
 ];
 
 /* ================= LOS MÁS PEDIDOS Y GALERÍA ================= */
@@ -242,14 +266,20 @@ const MAS_PEDIDOS = [
 
 ];
 
-/* Pedidos que hemos realizado (galería): una foto por bloque. La sección se oculta sola mientras esté vacía.
-   Guarda las fotos en la carpeta imagenes/galeria/ (conviértelas a .webp con optimizar_imagenes.py).
-   texto: opcional, se ve al abrir la foto. Ejemplo:
-     { foto: "imagenes/galeria/pedido1.webp", texto: "Cumpleaños de Ana" },  */
-/* Cuántas fotos se ven al inicio; el resto aparece con el botón "Ver más fotos". */
-const GALERIA_INICIAL = 12;
+/* PORTADA: fotos que pasan solas arriba de la página, en lugar del banner.
+   - Una foto por línea. texto: opcional, sale abajo de la foto (ej. "Cumpleaños de Ana").
+   - Se ven mejor las horizontales. Guárdalas en imagenes/galeria/ y conviértelas a .webp
+     con optimizar_imagenes.py para que la página cargue rápido.
+   - Si la lista queda vacía, se muestra el banner de siempre. */
+const PORTADA_SEGUNDOS = 5;   // cuántos segundos se ve cada foto
 
-const GALERIA = [
-  { foto: "imagenes/galeria/bolitas_queso.webp", texto: "Cumpleaños de Ana" }
+const PORTADA = [
+  { foto: "imagenes/galeria/pedido1.webp", texto: "Camarones con sus salsas" },
+  { foto: "imagenes/galeria/pedido2.webp", texto: "Minigelatinas Pool Party" },
+  { foto: "imagenes/galeria/pedido10.webp", texto: "Frutitas para Revelación de Género" },
+  { foto: "imagenes/galeria/pedido9.webp", texto: "Cajitas personalizadas" },
+  { foto: "imagenes/galeria/pedido5.webp", texto: "Cajas personalizadas para matrimonio" },
+  { foto: "imagenes/galeria/pedido6.webp", texto: "Pedido dulce: Chesscakes y frutitas de mapazán" },
+  { foto: "imagenes/galeria/pedido7.webp", texto: "Pedido para cumpleaños" },
+  { foto: "imagenes/galeria/pedido8.webp", texto: "Chef Chary" },
 ];
-

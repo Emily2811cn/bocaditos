@@ -9,6 +9,9 @@ const etiquetaIncluye = (b) => b.gratis
 const nombreLinea = (b, opcion) => opcion ? `${b.nombre} (${opcion})` : b.nombre;
 const paso = (b) => b.paso || PASO_POR_DEFECTO;
 const minimo = (b) => b.minimo || MINIMO_POR_DEFECTO;
+/* Nombre de la unidad: por defecto "unidades". Un postre puede usar unidad: ["porción", "porciones"] */
+const nomUnidad = (b, n) => b.unidad ? (n === 1 ? b.unidad[0] : b.unidad[1]) : "unidades";
+const textoCant = (b, n) => `${n} ${nomUnidad(b, n)}`;
 
 /* Tramo que aplica a N unidades: la presentación más grande que no pase de N.
    Ej. con 50 = $10 y 100 = $18: 50 → tramo de 50; 100, 150, 200... → tramo de 100 ($9 cada 50). */
@@ -76,7 +79,7 @@ const lista = document.getElementById("lista");
 
 function listaPrecios(b) {
   return `<ul class="lista-precios">${b.presentaciones.map(p =>
-    `<li><span>${p.cantidad} unidades</span><strong>${p.precio != null ? dinero(p.precio) : "—"}</strong></li>`).join("")}</ul>`;
+    `<li><span>${textoCant(b, p.cantidad)}</span><strong>${p.precio != null ? dinero(p.precio) : "—"}</strong></li>`).join("")}</ul>`;
 }
 function unidadesEnPedido(id) {
   return pedido.filter(x => x.id === id).reduce((t, x) => t + x.unidades, 0);
@@ -113,7 +116,7 @@ function aplicarFiltro(f) {
 }
 document.querySelectorAll(".filtros .btn").forEach(btn => btn.addEventListener("click", () => aplicarFiltro(btn.dataset.f)));
 
-/* Enlaces del menú (Dulces / Salados) */
+/* Enlaces del menú (Dulces / Salados / Postres) */
 document.querySelectorAll("[data-filtro]").forEach(a => a.addEventListener("click", () => {
   aplicarFiltro(a.dataset.filtro);
   bootstrap.Collapse.getOrCreateInstance(document.getElementById("menu"), { toggle: false }).hide();
@@ -135,6 +138,7 @@ function textoPrecio(b, unidades) {
 function pintarContador() {
   const b = buscar(seleccion.id);
   document.getElementById("cantNum").textContent = seleccion.unidades;
+  document.getElementById("cantUnidad").textContent = nomUnidad(b, seleccion.unidades);
   document.getElementById("cantPrecio").textContent = textoPrecio(b, seleccion.unidades);
   document.getElementById("cantMenos").disabled = seleccion.unidades <= minimo(b);
   document.getElementById("cantMas").disabled = seleccion.unidades + paso(b) > MAX_UNIDADES;
@@ -168,15 +172,15 @@ function abrirDetalle(id) {
         </div>` : ""}
         <h6>Elige la cantidad</h6>
         <div class="contador">
-          <button type="button" class="btn" id="cantMenos" aria-label="Quitar ${paso(b)} unidades">−</button>
+          <button type="button" class="btn" id="cantMenos" aria-label="Quitar ${textoCant(b, paso(b))}">−</button>
           <div class="contador-centro">
             <span class="contador-num" id="cantNum" aria-live="polite"></span>
-            <span class="contador-unidad">unidades</span>
+            <span class="contador-unidad" id="cantUnidad">unidades</span>
           </div>
-          <button type="button" class="btn" id="cantMas" aria-label="Agregar ${paso(b)} unidades">+</button>
+          <button type="button" class="btn" id="cantMas" aria-label="Agregar ${textoCant(b, paso(b))}">+</button>
         </div>
         <p class="contador-precio mb-1" id="cantPrecio"></p>
-        <p class="small text-secondary mb-0">Pedido mínimo: ${minimo(b)} unidades · de ${paso(b)} en ${paso(b)}</p>
+        <p class="small text-secondary mb-0">${paso(b) === 1 && minimo(b) === 1 ? `Puedes pedir desde 1 ${nomUnidad(b, 1)}` : `Pedido mínimo: ${textoCant(b, minimo(b))} · de ${paso(b)} en ${paso(b)}`}</p>
       </div>
     </div>`;
   pintarContador();
@@ -209,7 +213,7 @@ btnAgregar.addEventListener("click", () => {
   if (linea) linea.unidades = seleccion.unidades;
   else pedido.push({ id: seleccion.id, unidades: seleccion.unidades, ...(op ? { opcion: op } : {}) });
   modal.hide();
-  avisar(`✓ ${nombreLinea(b, op)} (${seleccion.unidades} unidades) en tu pedido`);
+  avisar(`✓ ${nombreLinea(b, op)} (${textoCant(b, seleccion.unidades)}) en tu pedido`);
   refrescar();
 });
 
@@ -242,7 +246,7 @@ function resumen() {
     const sub = precioDe(b, l.unidades);
     if (sub == null) completo = false; else total += sub;
     unidades += l.unidades;
-    return { ...l, nombre: nombreLinea(b, l.opcion), emoji: b.emoji, sub, detalle: detalleCuenta(b, l.unidades) };
+    return { ...l, nombre: nombreLinea(b, l.opcion), emoji: b.emoji, texto: textoCant(b, l.unidades), sub, detalle: detalleCuenta(b, l.unidades) };
   });
   return { lineas, total, completo, unidades };
 }
@@ -259,7 +263,7 @@ function pintarPedido() {
     <div class="linea-pedido">
       <div class="flex-grow-1">
         <strong>${l.emoji} ${l.nombre}</strong>
-        <div class="small text-secondary">${l.unidades} unidades</div>
+        <div class="small text-secondary">${l.texto}</div>
         <div class="small">${l.sub != null ? dinero(l.sub) : "Precio por confirmar"}</div>
       </div>
       <div class="stepper" data-id="${l.id}" data-op="${l.opcion || ""}">
@@ -305,7 +309,7 @@ document.getElementById("enviarPedido").addEventListener("click", () => {
 
   let msg = `Hola, soy ${nombre}. Quiero hacer este pedido:\n\n`;
   msg += lineas.map(l =>
-    `• ${l.nombre}: ${l.unidades} unidades` + (l.sub != null ? ` (${dinero(l.sub)})` : "")
+    `• ${l.nombre}: ${l.texto}` + (l.sub != null ? ` (${dinero(l.sub)})` : "")
   ).join("\n");
   msg += `\n\nTotal de unidades: ${unidades}`;
   msg += completo ? `\nTotal: ${dinero(total)}` : `\nTotal: por confirmar`;
@@ -343,45 +347,73 @@ refrescar();
     const c = e.target.closest(".chip-favorito");
     if (c) abrirDetalle(c.dataset.id);
   });
-
-  // Galería con visor (flechas o teclado para pasar de foto)
-  if (!GALERIA.length) return;
-  const cajaGal = document.getElementById("galeria");
-  const btnMas = document.getElementById("galeriaMas");
-  cajaGal.innerHTML = GALERIA.map((g, i) => `
-    <button type="button" class="galeria-item"${i >= GALERIA_INICIAL ? " hidden" : ""} data-i="${i}" aria-label="Ver foto ${i + 1}">
-      <img src="${g.foto}" alt="${g.texto || "Pedido " + (i + 1)}" loading="lazy" decoding="async">
-    </button>`).join("");
-  document.getElementById("galeriaBox").classList.remove("d-none");
-  if (GALERIA.length > GALERIA_INICIAL) {
-    btnMas.classList.remove("d-none");
-    btnMas.addEventListener("click", () => {
-      cajaGal.querySelectorAll("[hidden]").forEach(x => x.hidden = false);
-      btnMas.classList.add("d-none");
-    });
-  }
-
-  const visor = bootstrap.Modal.getOrCreateInstance(document.getElementById("modalFoto"));
-  const img = document.getElementById("visorImg");
-  const pie = document.getElementById("visorTexto");
-  let actual = 0;
-  function mostrar(i) {
-    actual = (i + GALERIA.length) % GALERIA.length;
-    img.src = GALERIA[actual].foto;
-    img.alt = GALERIA[actual].texto || "Pedido " + (actual + 1);
-    pie.textContent = GALERIA[actual].texto || `${actual + 1} / ${GALERIA.length}`;
-  }
-  cajaGal.addEventListener("click", e => {
-    const b = e.target.closest(".galeria-item");
-    if (!b) return;
-    mostrar(Number(b.dataset.i));
-    visor.show();
-  });
-  document.getElementById("visorAnt").addEventListener("click", () => mostrar(actual - 1));
-  document.getElementById("visorSig").addEventListener("click", () => mostrar(actual + 1));
-  document.getElementById("modalFoto").addEventListener("keydown", e => {
-    if (e.key === "ArrowLeft") mostrar(actual - 1);
-    if (e.key === "ArrowRight") mostrar(actual + 1);
-  });
 })();
 
+
+/* ---- Portada: carrusel automático (fotos en PORTADA, js/data.js) ---- */
+(function portada() {
+  const caja = document.getElementById("portada");
+  if (!caja || !PORTADA.length) return;            // sin fotos se queda el banner de siempre
+  const esc = (t) => String(t || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  const n = PORTADA.length;
+
+  caja.classList.add("activo");
+  // Solo la primera foto carga de entrada; las demás cargan cuando la página ya terminó (más rápido)
+  caja.innerHTML = PORTADA.map((p, i) => `
+    <div class="slide${i === 0 ? " activa" : ""}" role="group" aria-roledescription="diapositiva" aria-label="${i + 1} de ${n}"${i ? ' aria-hidden="true"' : ""}>
+      <img class="slide-fondo" ${i === 0 ? `src="${esc(p.foto)}"` : `data-src="${esc(p.foto)}"`} alt="" aria-hidden="true" decoding="async">
+      <img class="slide-foto" ${i === 0 ? `src="${esc(p.foto)}" fetchpriority="high"` : `data-src="${esc(p.foto)}"`} alt="${esc(p.texto || "Pedido " + (i + 1))}" decoding="async">
+      ${p.texto ? `<p class="slide-texto">${esc(p.texto)}</p>` : ""}
+    </div>`).join("") + (n > 1 ? `
+    <button type="button" class="portada-flecha ant" aria-label="Foto anterior">‹</button>
+    <button type="button" class="portada-flecha sig" aria-label="Foto siguiente">›</button>
+    <div class="portada-puntos">${PORTADA.map((_, i) =>
+      `<button type="button" class="punto${i === 0 ? " activo" : ""}" data-i="${i}" aria-label="Ir a la foto ${i + 1}"></button>`).join("")}</div>` : "");
+
+  const cargarResto = () => caja.querySelectorAll("img[data-src]").forEach(im => { im.src = im.dataset.src; im.removeAttribute("data-src"); });
+  if (document.readyState === "complete") cargarResto(); else window.addEventListener("load", cargarResto);
+  if (n < 2) return;
+
+  const slides = caja.querySelectorAll(".slide");
+  const puntos = caja.querySelectorAll(".punto");
+  let actual = 0, timer = null, pausado = false;
+
+  function ir(i) {
+    actual = (i + n) % n;
+    slides.forEach((s, k) => { s.classList.toggle("activa", k === actual); s.setAttribute("aria-hidden", k === actual ? "false" : "true"); });
+    puntos.forEach((p, k) => p.classList.toggle("activo", k === actual));
+  }
+  const quieteMovimiento = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function programar() {
+    clearTimeout(timer);
+    if (quieteMovimiento || pausado || document.hidden) return;
+    timer = setTimeout(() => { ir(actual + 1); programar(); }, PORTADA_SEGUNDOS * 1000);
+  }
+  const mover = (i) => { ir(i); programar(); };
+
+  caja.querySelector(".ant").addEventListener("click", () => mover(actual - 1));
+  caja.querySelector(".sig").addEventListener("click", () => mover(actual + 1));
+  caja.querySelector(".portada-puntos").addEventListener("click", e => {
+    const p = e.target.closest(".punto");
+    if (p) mover(Number(p.dataset.i));
+  });
+
+  // Se pausa mientras alguien la mira con el mouse o la enfoca con el teclado, y cuando la pestaña no está visible
+  caja.addEventListener("mouseenter", () => { pausado = true; programar(); });
+  caja.addEventListener("mouseleave", () => { pausado = false; programar(); });
+  caja.addEventListener("focusin", () => { pausado = true; programar(); });
+  caja.addEventListener("focusout", () => { pausado = false; programar(); });
+  document.addEventListener("visibilitychange", programar);
+
+  // Deslizar con el dedo
+  let x0 = null;
+  caja.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+  caja.addEventListener("touchend", e => {
+    if (x0 == null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    x0 = null;
+    if (Math.abs(dx) > 40) mover(actual + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  programar();
+})();

@@ -45,6 +45,7 @@ a:focus-visible,.btn:focus-visible,.card-bocadito:focus-visible{outline:3px soli
 .card-bocadito .foto{height:150px;display:flex;align-items:center;justify-content:center;font-size:4.5rem}
 .card-bocadito .foto.dulce{background:#FFF1F6}
 .card-bocadito .foto.salado{background:#F1FAF5}
+.card-bocadito .foto.postre{background:#FFF4E5}
 .card-bocadito img.foto{width:100%;height:170px;object-fit:contain;padding:.6rem}
 .lista-precios{list-style:none;padding:0;margin:.3rem 0 .5rem;font-size:.92rem}
 .lista-precios li{display:flex;justify-content:space-between;gap:.5rem;padding:.15rem 0;border-bottom:1px dotted #E3D8B5}
@@ -60,6 +61,7 @@ a:focus-visible,.btn:focus-visible,.card-bocadito:focus-visible{outline:3px soli
 .foto-modal{height:220px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:6rem}
 .foto-modal.dulce{background:#FFF1F6}
 .foto-modal.salado{background:#F1FAF5}
+.foto-modal.postre{background:#FFF4E5}
 img.foto-modal{width:100%;object-fit:contain;padding:.75rem}
 .contador{display:flex;align-items:center;justify-content:center;gap:1rem;background:var(--crema);border-radius:1rem;padding:.75rem;margin-bottom:.75rem}
 .contador .btn{width:3rem;height:3rem;border-radius:50%;border:1px solid var(--oro);background:#fff;color:var(--ink);font-size:1.5rem;font-weight:700;line-height:1;padding:0}
@@ -110,28 +112,33 @@ footer{background:var(--crema);color:var(--ink);border-top:1px solid var(--oro)}
 /* ---- Los más pedidos y galería ---- */
 #favoritos{background:var(--crema);border-top:1px solid #EFE7D0;scroll-margin-top:70px}
 #carta,#contacto{scroll-margin-top:70px}
-.visor{background:#fff;border-radius:1rem;overflow:hidden;position:relative}
-.visor img{width:100%;max-height:75vh;object-fit:contain;background:#000}
-.visor-cerrar{position:absolute;top:.6rem;right:.6rem;z-index:2;background-color:#fff;border-radius:50%;padding:.6rem;opacity:.9}
-.visor-pie{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.5rem .75rem;background:var(--crema)}
-.visor-pie span{flex:1;text-align:center;font-weight:500}
-.visor-nav{font-size:1.8rem;line-height:1;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--oro);width:2.8rem;height:2.8rem;border-radius:50%;padding:0}
-.visor-nav:hover{background:var(--oro-claro)}
 .chips-favoritos{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem}
 .chip-favorito{border:1px solid var(--oro);background:#fff;color:var(--ink);border-radius:2rem;padding:.45rem 1.1rem;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.2rem;line-height:1.2;box-shadow:0 2px 6px rgba(59,46,30,.08);transition:background .15s ease,transform .15s ease}
 .chip-favorito:hover{background:var(--oro-claro);transform:translateY(-2px)}
 .chip-favorito:focus-visible{outline:3px solid var(--oro-texto);outline-offset:2px}
-/* Galería en mosaico: las fotos conservan su forma, sin recortes */
-.galeria{column-count:2;column-gap:.7rem}
-@media (min-width:768px){.galeria{column-count:3;column-gap:1rem}}
-@media (min-width:1100px){.galeria{column-count:4}}
-.galeria-item{display:block;width:100%;margin:0 0 .7rem;border:0;padding:0;border-radius:1rem;overflow:hidden;background:#fff;cursor:zoom-in;break-inside:avoid;box-shadow:0 4px 12px rgba(59,46,30,.1)}
-.galeria-item[hidden]{display:none}
-@media (min-width:768px){.galeria-item{margin-bottom:1rem}}
-.galeria-item img{width:100%;height:auto;display:block;transition:transform .25s ease}
-.galeria-item:hover img{transform:scale(1.04)}
-.galeria-item:focus-visible{outline:3px solid var(--oro-texto);outline-offset:2px}
-.btn-ver-mas{border:1px solid var(--oro);background:#fff;color:var(--oro-texto);border-radius:2rem;padding:.5rem 1.6rem;font-weight:500}
-.btn-ver-mas:hover{background:var(--oro-claro);color:var(--ink)}
-@media (prefers-reduced-motion:reduce){.chip-favorito,.galeria-item img{transition:none}}
+
+/* ---- Portada: carrusel automático de pedidos realizados ---- */
+.portada.activo{position:relative;height:clamp(250px,72vw,330px);background:#2A2118;overflow:hidden;touch-action:pan-y}
+@media (min-width:768px){.portada.activo{height:clamp(340px,38vw,460px)}}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s linear .9s}
+.slide.activa{opacity:1;visibility:visible;transition:opacity .9s ease}
+.slide-foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* En computadora la foto se ve completa y los lados se rellenan con la misma foto difuminada */
+.slide-fondo{display:none}
+@media (min-width:768px){
+  .slide-fondo{display:block;position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;filter:blur(24px) brightness(.7)}
+  .slide-foto{object-fit:contain}
+}
+.slide-texto{position:absolute;left:50%;bottom:2.4rem;transform:translateX(-50%);margin:0;max-width:88%;padding:.3rem .95rem;border-radius:2rem;background:rgba(42,33,24,.62);color:#fff;font-size:.92rem;text-align:center;backdrop-filter:blur(4px)}
+.portada-puntos{position:absolute;left:0;right:0;bottom:.7rem;display:flex;justify-content:center;gap:.5rem}
+.punto{position:relative;width:.65rem;height:.65rem;border:0;border-radius:1rem;padding:0;background:rgba(255,255,255,.55);transition:width .25s ease,background .25s ease}
+.punto::after{content:"";position:absolute;inset:-.6rem -.3rem}
+.punto.activo{width:1.7rem;background:#fff}
+.portada-flecha{display:none;position:absolute;top:50%;transform:translateY(-50%);width:2.8rem;height:2.8rem;border:0;border-radius:50%;background:rgba(255,255,255,.8);color:var(--ink);font-size:1.8rem;line-height:1;padding:0;z-index:2;opacity:0;transition:opacity .2s ease}
+.portada-flecha.ant{left:1rem}
+.portada-flecha.sig{right:1rem}
+@media (min-width:768px){.portada-flecha{display:block}}
+.portada:hover .portada-flecha,.portada-flecha:focus-visible{opacity:1}
+.punto:focus-visible,.portada-flecha:focus-visible{outline:3px solid var(--oro-claro);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.slide,.slide.activa{transition:none}}
 

@@ -26,6 +26,7 @@
         <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
         <li class="nav-item"><a class="nav-link" href="#carta" data-filtro="dulce">Dulces</a></li>
         <li class="nav-item"><a class="nav-link" href="#carta" data-filtro="salado">Salados</a></li>
+        <li class="nav-item"><a class="nav-link" href="#carta" data-filtro="postre">Postres</a></li>
         <!-- Futuras pestañas: <li class="nav-item"><a class="nav-link" href="combos.html">Catering</a></li> -->
         <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
       </ul>
@@ -35,7 +36,10 @@
 
 <header class="hero" id="inicio">
   <h1 class="visually-hidden">Chary, bocaditos dulces y salados</h1>
-  <img src="imagenes/banner.webp" alt="Chary, bocaditos dulces y salados: alfajores, tartaletas de fruta, brownies, canapés, empanaditas y vasitos de fresa" class="hero-banner">
+  <!-- Carrusel automático: las fotos salen de PORTADA en js/data.js. Si PORTADA está vacía, se queda este banner. -->
+  <div class="portada" id="portada" role="region" aria-roledescription="carrusel" aria-label="Pedidos que hemos realizado">
+    <img src="imagenes/banner.webp" alt="Chary, bocaditos dulces y salados: alfajores, tartaletas de fruta, brownies, canapés, empanaditas y vasitos de fresa" class="hero-banner">
+  </div>
 </header>
 
 <main class="container py-5" id="carta">
@@ -45,24 +49,18 @@
     <button class="btn active" data-f="todos">Todos</button>
     <button class="btn" data-f="dulce">Dulces</button>
     <button class="btn" data-f="salado">Salados</button>
+    <button class="btn" data-f="postre">Postres</button>
   </div>
   <div class="row g-3 g-md-4" id="lista"></div>
 </main>
 
-<!-- Los más pedidos (solo nombres) y galería de pedidos realizados: el contenido sale de js/data.js (MAS_PEDIDOS, GALERIA) -->
+<!-- Los más pedidos (solo nombres): el contenido sale de js/data.js (MAS_PEDIDOS) -->
 <section id="favoritos" class="favoritos py-5">
   <div class="container">
     <div class="mb-5 d-none" id="masPedidosBox">
       <h2 class="text-center mb-1">Los más pedidos</h2>
       <p class="text-center text-secondary mb-4">Los favoritos de nuestros clientes.</p>
       <div class="chips-favoritos" id="masPedidos"></div>
-    </div>
-
-    <div class="d-none" id="galeriaBox">
-      <h3 class="text-center mb-1">Pedidos que hemos realizado</h3>
-      <p class="text-center text-secondary mb-4">Así lucen nuestros bocaditos en tus eventos.</p>
-      <div class="galeria" id="galeria"></div>
-      <div class="text-center mt-4"><button type="button" class="btn btn-ver-mas d-none" id="galeriaMas">Ver más fotos</button></div>
     </div>
   </div>
 </section>
@@ -131,21 +129,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" id="modalAgregar" class="btn btn-rose">Agregar al pedido</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Visor de fotos de la galería -->
-<div class="modal fade" id="modalFoto" tabindex="-1" aria-label="Foto de la galería" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content visor">
-      <button type="button" class="btn-close visor-cerrar" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      <img id="visorImg" src="" alt="">
-      <div class="visor-pie">
-        <button type="button" class="btn visor-nav" id="visorAnt" aria-label="Foto anterior">‹</button>
-        <span id="visorTexto"></span>
-        <button type="button" class="btn visor-nav" id="visorSig" aria-label="Foto siguiente">›</button>
       </div>
     </div>
   </div>
